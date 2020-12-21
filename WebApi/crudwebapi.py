@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 
 
@@ -22,6 +22,21 @@ class Data(db.Model):
         self.name = name
         self.email = email
         self.phone = phone
+
+
+@app.route('/insert', methods=['POST'])
+def insert():
+
+    if request.method == 'POST':
+        vari_name = request.form['name']
+        vari_email = request.form['email']
+        vari_phone = request.form['phone']
+
+        my_data = Data(vari_name, vari_email, vari_phone)
+        db.session.add(my_data)
+        db.session.commit()
+
+        return redirect(url_for('index'))
 
 
 @app.route('/')
