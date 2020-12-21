@@ -41,6 +41,23 @@ def insert():
         return redirect(url_for('index'))
 
 
+@app.route('/update', methods=['GET', 'POST'])
+def update():
+
+    if request.method == 'POST':
+        # this is the hidden id which we have provided in modal edit
+        my_data = Data.query.get(request.form.get('id'))
+
+        my_data.name = request.form['name']
+        my_data.email = request.form['email']
+        my_data.phone = request.form['phone']
+
+        db.session.commit()
+        flash("Employee has been updated successfully")
+
+        return render_template(url_for('index'))
+
+
 @app.route('/')
 def index():
     all_data = Data.query.all()

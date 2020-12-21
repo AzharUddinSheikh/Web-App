@@ -24,7 +24,6 @@
                     {{message}}
                 </div>
 
-
                 {% endfor %}
                 {% endif %}
                 {% endwith %}
@@ -47,26 +46,16 @@
                         <td>{{row.phone}}</td>
 
                         <td>
-                            <a href="" class="btn btn-warning btn-xs" data-toggle="modal"
-                                data-target="#modaledit">Method Put</a>
+                            <a href="/update/{{row.id}}" class="btn btn-warning btn-xs" data-toggle="modal"
+                                data-target="#modaledit{{row.id}}">Method PUT</a>
                             <a href="" class="btn btn-danger btn-xs"
-                                onclick="return confirm('Are you sure to delete?')">Method Put</a>
+                                onclick="return confirm('Are you sure to delete?')">Method DELETE</a>
                         </td>
 
                     </tr>
 
-
-
-
-
-
-
-
-
-
-
                     <!-- modal Edit employees -->
-                    <div id="modaledit" class="modal fade" role="dialog">
+                    <div id="modaledit{{row.id}}" class="modal fade" role="dialog">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -75,45 +64,47 @@
                                 </div>
                                 <div class="modal-body">
 
-                                    <form action="" method="POST">
+                                    <form action="{{url_for('update')}}" method="POST">
 
                                         <div class="form-group">
 
                                             <label>Name:</label>
-                                            <input type="hidden" name="id" value="id">
-                                            <input type="text" class="form-control" name="name" value="Azhar">
+                                            <input type="hidden" name="id" value="{{row.id}}">
+                                            <input type="text" class="form-control" name="name" value="{{row.name}}">
 
                                         </div>
 
                                         <div class="form-group">
 
                                             <label>Email:</label>
-                                            <input type="email" class="form-control" name="email"
-                                                value="Azharsheikh760@gmail.com">
+                                            <input type="email" class="form-control" name="email" value="{{row.email}}">
 
                                         </div>
 
                                         <div class="form-group">
 
                                             <label>Phone:</label>
-                                            <input type="number" class="form-control" name="phone" value="12546979">
+                                            <input type="number" class="form-control" name="phone"
+                                                value="{{row.phone}}">
 
                                         </div>
+
+                                        <div class="form-group">
+                                            <button class="btn btn-primary mr-auto" type="submit">Update
+                                                Employee</button>
+                                        </div>
+
                                     </form>
                                 </div>
 
                                 <div class="modal-footer">
 
-                                    <button class="btn btn-primary mr-auto" type="submit">Update Employee</button>
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 
                                 </div>
                             </div>
                         </div>
                     </div>
-
-
-
 
                     {% endfor %}
 
@@ -157,7 +148,6 @@
 
                                     <button class="btn btn-primary mr-auto" type="submit">Add Employee</button>
                                 </div>
-
 
                             </form>
                         </div>
