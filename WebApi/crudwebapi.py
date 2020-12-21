@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
 
 
@@ -35,6 +35,8 @@ def insert():
         my_data = Data(vari_name, vari_email, vari_phone)
         db.session.add(my_data)
         db.session.commit()
+
+        flash('Successfully Added Employee')
 
         return redirect(url_for('index'))
 
