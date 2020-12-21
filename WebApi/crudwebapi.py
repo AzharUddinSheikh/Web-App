@@ -24,6 +24,13 @@ class Data(db.Model):
         self.phone = phone
 
 
+@app.route('/')
+def index():
+    all_data = Data.query.all()
+
+    return render_template('index.html', getall=all_data)
+
+
 @app.route('/insert', methods=['POST'])
 def insert():
 
@@ -55,14 +62,19 @@ def update():
         db.session.commit()
         flash("Employee has been updated successfully")
 
-        return render_template(url_for('index'))
+        return redirect(url_for('index'))
 
 
-@app.route('/')
-def index():
-    all_data = Data.query.all()
+app.route('/delete/<id>', methods=['GET', 'POST'])
 
-    return render_template('index.html', getall=all_data)
+
+def delete(id):
+    my_data = Data.query.get(id)
+    db.session.delete(my_data)
+    db.session.commit()
+    flash('Employee has been deleted')
+
+    return redirect(url_for('index'))
 
 
 if __name__ == ("__main__"):
