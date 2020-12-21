@@ -43,7 +43,9 @@ def insert():
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    all_data = Data.query.all()
+
+    return render_template('index.html', getall=all_data)
 
 
 if __name__ == ("__main__"):
