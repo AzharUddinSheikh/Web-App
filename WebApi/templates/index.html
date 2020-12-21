@@ -38,11 +38,96 @@
 
                     </tr>
 
+
+
+
+
+
+
+
+
+
+
+                    <!-- modal Edit employees -->
+                    <div id="modaledit" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+
+                                    <h4 class="modal-title">Edit Information</h4>
+                                </div>
+                                <div class="modal-body">
+
+                                    <form action="" method="POST">
+
+                                        <div class="form-group">
+
+                                            <label>Name:</label>
+                                            <input type="hidden" name="id" value="id">
+                                            <input type="text" class="form-control" name="name" value="Azhar">
+
+                                        </div>
+
+                                        <div class="form-group">
+
+                                            <label>Email:</label>
+                                            <input type="email" class="form-control" name="email"
+                                                value="Azharsheikh760@gmail.com">
+
+                                        </div>
+
+                                        <div class="form-group">
+
+                                            <label>Phone:</label>
+                                            <input type="number" class="form-control" name="phone" value="12546979">
+
+                                        </div>
+                                    </form>
+                                </div>
+
+                                <div class="modal-footer">
+
+                                    <button class="btn btn-primary mr-auto" type="submit">Update Employee</button>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+
+
                 </table>
             </div>
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <!-- modal added employees -->
             <div id="mymodal" class="modal fade" role="dialog">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -54,40 +139,28 @@
 
                             <form action="" method="POST">
 
-
                                 <div class="form-group">
 
                                     <label>Name:</label>
                                     <input type="text" class="form-control" name="name" required="1">
 
-
                                 </div>
 
-
                                 <div class="form-group">
-
 
                                     <label>Email:</label>
                                     <input type="email" class="form-control" name="email" required="1">
 
-
                                 </div>
 
-
                                 <div class="form-group">
-
 
                                     <label>Phone:</label>
                                     <input type="number" class="form-control" name="phone" required="1">
 
-
                                 </div>
-
                             </form>
-
-
                         </div>
-
 
                         <div class="modal-footer">
 
