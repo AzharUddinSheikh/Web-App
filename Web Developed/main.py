@@ -11,6 +11,7 @@ with open('config.json', 'r') as c:
 
 app = Flask(__name__)
 
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # if we r working in local server
 if local_server:
     app.config['SQLALCHEMY_DATABASE_URI'] = params['local_uri']
@@ -32,12 +33,13 @@ class Contacts(db.Model):
 
 @app.route('/')
 def home():
-    return render_template('indexblog.html')
+    return render_template('indexblog.html', params=params)
+# providing params = params i ll read this parameter in jinja template so that all paramter ll go in templates
 
 
 @app.route('/about')
 def about():
-    return render_template('aboutblog.html')
+    return render_template('aboutblog.html', params=params)
 
 
 @app.route('/contact', methods=['GET', 'POST'])
@@ -55,12 +57,12 @@ def contact():
         db.session.add(entry)
         db.session.commit()
 
-    return render_template('contactblog.html')
+    return render_template('contactblog.html', params=params)
 
 
 @app.route('/post')
 def post():
-    return render_template('postblog.html')
+    return render_template('postblog.html', params=params)
 
 
 if __name__ == ("__main__"):
