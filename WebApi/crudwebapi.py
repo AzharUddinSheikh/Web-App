@@ -23,12 +23,16 @@ class Data(db.Model):
         self.email = email
         self.phone = phone
 
+# fetching all data
+
 
 @app.route('/')
 def index():
     all_data = Data.query.all()
 
     return render_template('index.html', getall=all_data)
+
+# employee added succesfully
 
 
 @app.route('/insert', methods=['POST'])
@@ -46,6 +50,8 @@ def insert():
         flash('Successfully Added Employee')
 
         return redirect(url_for('index'))
+
+# route is for updating emloyee info
 
 
 @app.route('/update', methods=['GET', 'POST'])
@@ -65,14 +71,13 @@ def update():
         return redirect(url_for('index'))
 
 
-app.route('/delete/<id>', methods=['GET', 'POST'])
-
-
+# This route is for deleting our employee
+@app.route('/delete/<id>/', methods=['GET', 'POST'])
 def delete(id):
     my_data = Data.query.get(id)
     db.session.delete(my_data)
     db.session.commit()
-    flash('Employee has been deleted')
+    flash("Employee Deleted Successfully")
 
     return redirect(url_for('index'))
 
