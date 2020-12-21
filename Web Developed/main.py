@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
+from flask_mail import Mail, Message
 from datetime import datetime
 import json
 
@@ -10,6 +11,16 @@ with open('config.json', 'r') as c:
     params = json.load(c)["params"]
 
 app = Flask(__name__)
+
+# setting mail config of gmail
+app.config.update(
+    MAIL_SERVER='smtp@gmail.com',
+    MAIL_PORT='465',
+    MAIL_USE_SSL=True,
+    MAIL_USERNAME=params['gmail_user'],
+    MAIL_PASSWORD=params['gmail_password']
+)
+mail = Mail(app)
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # if we r working in local server
@@ -56,6 +67,10 @@ def contact():
                          phone_num=phone, msg=message, email=email)
         db.session.add(entry)
         db.session.commit()
+
+        mail.send_message(subject='testing',
+                          recipients=['azharsheikh760@gmail.com'],
+                          body=message)
 
     return render_template('contactblog.html', params=params)
 
