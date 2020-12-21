@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
-
+from datetime import datetime
 
 app = Flask(__name__)
 
@@ -39,7 +39,8 @@ def contact():
         phone = request.form.get('phone')
         message = request.form.get('message')
 
-        entry = Contacts(name=name, phone_num=phone, msg=message, email=email)
+        entry = Contacts(name=name, date=datetime.now(),
+                         phone_num=phone, msg=message, email=email)
         db.session.add(entry)
         db.session.commit()
 
