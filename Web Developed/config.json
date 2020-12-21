@@ -1,0 +1,7 @@
+{
+    "params": {
+        "local_server": "True",
+        "local_uri": "mysql://root:@127.0.0.1:3307/codingthunder",
+        "prod_uri": "mysql://root:@127.0.0.1:3307/codingthunder",
+    }
+}

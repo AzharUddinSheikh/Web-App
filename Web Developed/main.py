@@ -1,10 +1,21 @@
 from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
+import json
+
+
+# how to let our json file readable here
+local_server = True
+with open('config.json', 'r') as c:
+    params = json.load(c)["params"]
 
 app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:@127.0.0.1:3307/codingthunder'
+# if we r working in local server
+if local_server:
+    app.config['SQLALCHEMY_DATABASE_URI'] = params['local_uri']
+else:
+    app.config['SQLALCHEMY_DATABASE_URI'] = params['prod_uri']
 
 db = SQLAlchemy(app)
 
