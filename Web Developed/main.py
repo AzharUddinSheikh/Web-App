@@ -99,7 +99,7 @@ def dashboard():
 
             return render_template('dashboard.html', params=params)
 
-    return render_template('login.html', params=params, posts=posts)
+    return render_template('login.html', params=params)
 
 # adding contact route and getting values from html and saving to db
 
@@ -188,13 +188,23 @@ def uploader():
                 app.config['UPLOAD_FOLDER'], secure_filename(f.filename)))
             return "uploaded successfully"
 
+
 # creating logout session
-
-
 @app.route('/logout')
 def logout():
     session.pop('user')
     return redirect('/dashboard')
+
+
+# deleting our data
+@app.route('/delete/<string:sno>', methods=['GET', 'POST'])
+def delete(sno):
+    if ('user' in session and session['user'] == params['admin_user']):
+        post = Posts.query.filter_by(sno=sno).first()
+        db.session.delete(post)
+        db.session.commit()
+
+        return redirect('/dashboard')
 
 
 if __name__ == ("__main__"):
