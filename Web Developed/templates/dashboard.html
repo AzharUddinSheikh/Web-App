@@ -15,8 +15,15 @@
             </div>
         </div>
     </div>
-    <a href="/edit/0"><button style="float: right;">Logout</button></a>
+    <a href="/logout"><button style="float: right;">Logout</button></a>
 </header>
+
+<!-- uploader code -->
+<form action="/uploader" method="POST" enctype="multipart/form-data">
+    <input type="file" name="file1">
+    <button type="submit">Submit</button>
+</form>
+
 
 <div>
     <a href="/edit/0"><button style="float: right;">ADD POST</button></a>

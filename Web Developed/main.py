@@ -3,7 +3,8 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_mail import Mail, Message
 from datetime import datetime
 import json
-
+import os
+from werkzeug.utils import secure_filename
 
 # how to let our json file readable here
 local_server = True
@@ -12,6 +13,9 @@ with open('config.json', 'r') as c:
 
 # initiating flask a
 app = Flask(__name__)
+
+# providing config to task to be done
+app.config['UPLOAD_FOLDER'] = params['uploadlocation']
 
 # setting mail config of gmail
 app.config.update(
@@ -157,6 +161,18 @@ def insert(sno):
                 return redirect('/edit/'+sno)
         post = Posts.query.filter_by(sno=sno).first()
         return render_template('edit.html', params=params, post=post)
+
+
+# creating a uploader
+@app.route('/uploader', methods=['GET', 'POST'])
+def uploader():
+    # check the user is login or not also request is post or not
+    if ('user' in session and session['user'] == params['admin_user']):
+        if request.method == "POST":
+            f = request.files['file1']
+            f.save(os.path.join(
+                app.config['UPLOAD_FOLDER'], secure_filename(f.filename)))
+            return "uploaded successfully"
 
 
 if __name__ == ("__main__"):
