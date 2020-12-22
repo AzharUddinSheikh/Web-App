@@ -96,8 +96,7 @@ def dashboard():
 
             # fetching our data to dashboard.html (GET METHOD USED )
             posts = Posts.query.all()
-
-            return render_template('dashboard.html', params=params)
+            return render_template('dashboard.html', params=params, posts=posts)
 
     return render_template('login.html', params=params)
 
@@ -127,6 +126,7 @@ def contact():
     return render_template('contactblog.html', params=params)
 
 # Function for providing route(page) for every single post when tapping on particular post
+# worked fine
 
 
 @app.route('/post/<string:post_slug>', methods=['GET'])
@@ -150,12 +150,12 @@ def insert(sno):
             box_content = request.form.get('content')
             box_slug = request.form.get('slug')
             box_img = request.form.get('img')
-
+            date = datetime.now()
             # all name from html post request are in variable
 # adding our post when sno == 0
 
             if sno == '0':
-                post = Posts(date=datetime.now(), title=box_title, slug=box_slug, content=box_content,
+                post = Posts(date=date, title=box_title, slug=box_slug, content=box_content,
                              postedby=box_postedby, subheading=box_subheading, img_file=box_img)
                 db.session.add(post)
                 db.session.commit()
@@ -169,15 +169,15 @@ def insert(sno):
                 post.img_file = box_img
                 post.postedby = box_postedby
                 post.content = box_content
-                post.date = datetime.now()
+                post.date = date
                 db.session.commit()
 
                 return redirect('/edit/'+sno)
         post = Posts.query.filter_by(sno=sno).first()
-        return render_template('edit.html', params=params, post=post)
+        return render_template('edit.html', params=params, post=post, sno=sno)
 
 
-# creating a uploader
+# creating a uploader working fine
 @app.route('/uploader', methods=['GET', 'POST'])
 def uploader():
     # check the user is login or not also request is post or not
@@ -189,14 +189,14 @@ def uploader():
             return "uploaded successfully"
 
 
-# creating logout session
+# creating logout session working fine
 @app.route('/logout')
 def logout():
     session.pop('user')
     return redirect('/dashboard')
 
 
-# deleting our data
+# deleting our data not working correctly
 @app.route('/delete/<string:sno>', methods=['GET', 'POST'])
 def delete(sno):
     if ('user' in session and session['user'] == params['admin_user']):

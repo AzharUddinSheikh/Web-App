@@ -1,0 +1,13 @@
+how to use simple jinja templating (how to extended things )
+
+how to create a modal 
+
+how to create flash messages
+
+how to send mail by flask or db
+
+how to use parameter / for loop and calling varible form app.py
+
+for loop in jinja
+
+uploading file (uplaoder )
