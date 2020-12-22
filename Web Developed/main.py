@@ -10,6 +10,7 @@ local_server = True
 with open('config.json', 'r') as c:
     params = json.load(c)["params"]
 
+# initiating flask a
 app = Flask(__name__)
 
 # setting mail config of gmail
@@ -133,7 +134,7 @@ def insert(sno):
             box_img = request.form.get('img')
 
             # all name from html post request are in variable
-            # if sno == 0 then we add new user if sno is something else then we edit
+# if sno == 0 then we add new user if sno is something else then we edit
 
             if sno == '0':
                 post = Posts(date=datetime.now(), title=box_title, slug=box_slug, content=box_content,
@@ -141,7 +142,21 @@ def insert(sno):
                 db.session.add(post)
                 db.session.commit()
 
-        return render_template('edit.html', params=params, sno=sno)
+# edit it if sno not 0
+            else:
+                post = Posts.query.filter_by(sno=sno).first()
+                post.title = box_title
+                post.slug = box_slug
+                post.subheading = box_subheading
+                post.img_file = box_img
+                post.postedby = box_postedby
+                post.content = box_content
+                post.date = datetime.now()
+                db.session.commit()
+
+                return redirect('/edit/'+sno)
+        post = Posts.query.filter_by(sno=sno).first()
+        return render_template('edit.html', params=params, post=post)
 
 
 if __name__ == ("__main__"):
