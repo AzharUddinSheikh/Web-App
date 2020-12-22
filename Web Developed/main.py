@@ -17,7 +17,7 @@ app = Flask(__name__)
 # providing config to task to be done
 app.config['UPLOAD_FOLDER'] = params['uploadlocation']
 
-# setting mail config of gmail
+# setting mail config of gmail and initializing it
 app.config.update(
     MAIL_SERVER='smtp@gmail.com',
     MAIL_PORT='465',
@@ -37,6 +37,8 @@ else:
 
 db = SQLAlchemy(app)
 
+# class for connected our db table name contacts
+
 
 class Contacts(db.Model):
 
@@ -46,6 +48,8 @@ class Contacts(db.Model):
     msg = db.Column(db.String(120), unique=True, nullable=False)
     date = db.Column(db.String(12), unique=False)
     email = db.Column(db.String(20), unique=False, nullable=False)
+
+# class for connecting our db table name post
 
 
 class Posts(db.Model):
@@ -59,6 +63,8 @@ class Posts(db.Model):
     subheading = db.Column(db.String(20), unique=True, nullable=False)
     img_file = db.Column(db.String(20), unique=False, nullable=False)
 
+# route for our blog home page already provided limited post here
+
 
 @app.route('/')
 def home():
@@ -71,9 +77,12 @@ def home():
 def about():
     return render_template('aboutblog.html', params=params)
 
+# creating login session
+
 
 @app.route('/dashboard', methods=['GET', 'POST'])
 def dashboard():
+    # checking if user already login
     if ('user' in session and session['user'] == params['admin_user']):
         posts = Posts.query.all()
         return render_template('dashboard.html', params=params, posts=posts)
@@ -85,12 +94,14 @@ def dashboard():
             # set session variable
             session['user'] = username
 
-            # fetching our data to dashboard.html
+            # fetching our data to dashboard.html (GET METHOD USED )
             posts = Posts.query.all()
 
             return render_template('dashboard.html', params=params)
 
     return render_template('login.html', params=params, posts=posts)
+
+# adding contact route and getting values from html and saving to db
 
 
 @app.route('/contact', methods=['GET', 'POST'])
@@ -108,11 +119,14 @@ def contact():
         db.session.add(entry)
         db.session.commit()
 
+# method for getting mails when someone send msg to our db
         mail.send_message(subject='testing',
                           recipients=['azharsheikh760@gmail.com'],
                           body=message)
 
     return render_template('contactblog.html', params=params)
+
+# Function for providing route(page) for every single post when tapping on particular post
 
 
 @app.route('/post/<string:post_slug>', methods=['GET'])
@@ -121,7 +135,7 @@ def post_route(post_slug):
     return render_template('postblog.html', params=params, post=post)
 
 
-# Edit button route
+# Edit/add button route
 @app.route('/edit/<string:sno>', methods=['GET', 'POST'])
 def insert(sno):
 
@@ -138,7 +152,7 @@ def insert(sno):
             box_img = request.form.get('img')
 
             # all name from html post request are in variable
-# if sno == 0 then we add new user if sno is something else then we edit
+# adding our post when sno == 0
 
             if sno == '0':
                 post = Posts(date=datetime.now(), title=box_title, slug=box_slug, content=box_content,
@@ -146,7 +160,7 @@ def insert(sno):
                 db.session.add(post)
                 db.session.commit()
 
-# edit it if sno not 0
+# editing our posts when sno != 0
             else:
                 post = Posts.query.filter_by(sno=sno).first()
                 post.title = box_title
@@ -173,6 +187,14 @@ def uploader():
             f.save(os.path.join(
                 app.config['UPLOAD_FOLDER'], secure_filename(f.filename)))
             return "uploaded successfully"
+
+# creating logout session
+
+
+@app.route('/logout')
+def logout():
+    session.pop('user')
+    return redirect('/dashboard')
 
 
 if __name__ == ("__main__"):
