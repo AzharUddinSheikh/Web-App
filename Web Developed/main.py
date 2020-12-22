@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, session, redirect
 from flask_sqlalchemy import SQLAlchemy
 from flask_mail import Mail, Message
 from datetime import datetime
@@ -22,6 +22,7 @@ app.config.update(
 )
 mail = Mail(app)
 
+app.config['SECRET_KEY'] = 'secretkey'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # if we r working in local server
 if local_server:
@@ -68,12 +69,23 @@ def about():
 
 @app.route('/dashboard', methods=['GET', 'POST'])
 def dashboard():
-    if request.method == 'POST':
-        pass
-    else:
-        pass
+    if ('user' in session and session['user'] == params['admin_user']):
+        posts = Posts.query.all()
+        return render_template('dashboard.html', params=params, posts=posts)
 
-    return render_template('login.html', params=params)
+    if request.method == 'POST':
+        username = request.form.get('username')
+        userpass = request.form.get('password')
+        if (username == params['admin_user'] and userpass == params['admin_password']):
+            # set session variable
+            session['user'] = username
+
+            # fetching our data to dashboard.html
+            posts = Posts.query.all()
+
+            return render_template('dashboard.html', params=params)
+
+    return render_template('login.html', params=params, posts=posts)
 
 
 @app.route('/contact', methods=['GET', 'POST'])
@@ -102,6 +114,34 @@ def contact():
 def post_route(post_slug):
     post = Posts.query.filter_by(slug=post_slug).first()
     return render_template('postblog.html', params=params, post=post)
+
+
+# Edit button route
+@app.route('/edit/<string:sno>', methods=['GET', 'POST'])
+def insert(sno):
+
+    # check user is logged in ? then only we allow to edit our post
+    if ('user' in session and session['user'] == params['admin_user']):
+        # if action was post from webapp
+        if request.method == 'POST':
+
+            box_title = request.form.get('title')
+            box_subheading = request.form.get('subheading')
+            box_postedby = request.form.get('postedby')
+            box_content = request.form.get('content')
+            box_slug = request.form.get('slug')
+            box_img = request.form.get('img')
+
+            # all name from html post request are in variable
+            # if sno == 0 then we add new user if sno is something else then we edit
+
+            if sno == '0':
+                post = Posts(date=datetime.now(), title=box_title, slug=box_slug, content=box_content,
+                             postedby=box_postedby, subheading=box_subheading, img_file=box_img)
+                db.session.add(post)
+                db.session.commit()
+
+        return render_template('edit.html', params=params, sno=sno)
 
 
 if __name__ == ("__main__"):
