@@ -56,7 +56,8 @@ class Posts(db.Model):
 
 @app.route('/')
 def home():
-    return render_template('indexblog.html', params=params)
+    posts = Posts.query.filter_by().all()[0:params['no_of_post']]
+    return render_template('indexblog.html', params=params, posts=posts)
 # providing params = params i ll read this parameter in jinja template so that all paramter ll go in templates
 
 
