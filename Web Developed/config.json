@@ -1,5 +1,7 @@
 {
     "params": {
+        "admin_user": "azhar@gmail.com",
+        "admin_password": "Valar",
         "local_server": "True",
         "local_uri": "mysql://root:@127.0.0.1:3307/codingthunder",
         "prod_uri": "mysql://root:@127.0.0.1:3307/codingthunder",
@@ -15,6 +17,7 @@
         "gmail_user": "azharsheikh760@gmail.com",
         "gmail_password": "Valar123@",
         "no_of_post": 3,
+        "login_img": "bootstrap-logo.svg",
         "about_text": "Hey Welcome To The Blog Learn about something This blog has been created in decemeber 2020 purpose of this blog is to aware the people who are seeking to grow their money and also student who want to try to find career in , So Again Hey my name is Azhar uddin sheikh i have completed my autombile engineer degree in 2020 but due to hit by convid 19 everything has been changed every single things got hit by this disease. workers are continously fired by their company small and midcaps got shut down beacuase of high debt and low income many skilled labor and workers are also been effected export and import in country has been stopped poor class"
     }
 }

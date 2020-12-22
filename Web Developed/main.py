@@ -66,6 +66,16 @@ def about():
     return render_template('aboutblog.html', params=params)
 
 
+@app.route('/dashboard', methods=['GET', 'POST'])
+def dashboard():
+    if request.method == 'POST':
+        pass
+    else:
+        pass
+
+    return render_template('login.html', params=params)
+
+
 @app.route('/contact', methods=['GET', 'POST'])
 def contact():
     if request.method == 'POST':
